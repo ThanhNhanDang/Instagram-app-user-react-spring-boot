@@ -31,11 +31,15 @@ export class LoginPage extends Component {
           <Grid item xs={6}>
             <div className="loginpage__main">
               <div>
-                <img src={inst_image} width="450px" />
+                <img alt="inst_image" src={inst_image} width="450px" />
               </div>
               <div>
                 <div className="loginpage__rightcomponent">
-                  <img className="loginpage__logo" src={inst_logo} />
+                  <img
+                    alt="inst_logo"
+                    className="loginpage__logo"
+                    src={inst_logo}
+                  />
                   <div className="loginPage__signin">
                     {this.state.isLogin ? <SignIn /> : <SignUp />}
                     <div className="login__ordiv">
@@ -46,6 +50,7 @@ export class LoginPage extends Component {
 
                     <div className="login__fb">
                       <img
+                        alt="facebook"
                         src={fb}
                         width="15px"
                         style={{ marginRight: "5px" }}
@@ -73,11 +78,13 @@ export class LoginPage extends Component {
                   <div>Get the app.</div>
                   <div className="loginPage__option">
                     <img
+                      alt="appstore"
                       className="loginPage_dwimg"
                       src={appstore}
                       width="136px"
                     />
                     <img
+                      alt="playstore"
                       className="loginPage_dwimg"
                       src={playstore}
                       width="136px"

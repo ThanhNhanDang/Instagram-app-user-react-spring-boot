@@ -1,7 +1,6 @@
 import { Avatar } from "@material-ui/core";
 import React, { Component } from "react";
 import "./Post.css";
-import postImage from "../../images/post.jpg";
 import comment from "../../images/comment.svg";
 import love from "../../images/love.svg";
 import share from "../../images/share.svg";
@@ -45,14 +44,14 @@ export class Post extends Component {
         </div>
         {/* Image */}
         <div>
-          <img src={this.props.postImage} width="615px" />
+          <img alt="postImage"src={this.props.postImage} width="615px" />
         </div>
         {/* Analytics */}
         <div>
           <div style={{ marginLeft: "10px" }}>
-            <img src={love} className="post__reactimage" />
-            <img src={comment} className="post__reactimage" />
-            <img src={share} className="post__reactimage" />
+            <img alt="love" src={love} className="post__reactimage" />
+            <img alt="comment" src={comment} className="post__reactimage" />
+            <img alt="share" src={share} className="post__reactimage" />
           </div>
         </div>
         <div style={{ fontWeight: "bold", marginLeft: "15px" }}>

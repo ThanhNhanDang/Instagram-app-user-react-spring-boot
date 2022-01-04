@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Post from "../Post/Post";
 import "./MainPage.css";
 import statusImg1 from "../../images/pp1.png";
+import uploadIcon from "../../images/upload.png";
 
 export class MainPage extends Component {
   constructor(props) {
@@ -39,6 +40,10 @@ export class MainPage extends Component {
   render() {
     return (
       <div>
+        <div style={{textAlign:"center", margin:"10px"}}>
+          <img className="mainpage__uploadicon" alt="upload" src={uploadIcon}/>
+        </div>
+        <div>
         {this.state.postList.map((post, index) => (
           <Post
             key={index}
@@ -49,6 +54,8 @@ export class MainPage extends Component {
             likes={post.likes}
           />
         ))}
+        </div>
+        
       </div>
     );
   }

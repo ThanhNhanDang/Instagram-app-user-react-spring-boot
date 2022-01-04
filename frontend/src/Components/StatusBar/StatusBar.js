@@ -5,6 +5,7 @@ import statusImg1 from "../../images/pp1.png";
 import statusImg2 from "../../images/pp2.png";
 import statusImg3 from "../../images/pp3.jpeg";
 import statusImg4 from "../../images/pp4.jpeg";
+import uploadImage from "../../images/statusadd.png";
 export class StatusBar extends Component {
   constructor(props) {
     super(props);
@@ -120,6 +121,7 @@ export class StatusBar extends Component {
   render() {
     return (
       <div className="statusbar__container">
+        <img alt="uploadImage" className="statusbar__upload" src={uploadImage} width="55px" height="55px"/>
         {this.state.statusList.map((status, index) => (
           <div className="status" key={index}>
             <Avatar className="statusbar__status" src={status.imageURL} />
