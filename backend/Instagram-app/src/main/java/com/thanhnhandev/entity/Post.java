@@ -29,7 +29,7 @@ public class Post {
 		this.postId = postId;
 		this.userId = userId;
 		this.path = path;
-		this.userName =userName
+		this.userName =userName;
 		this.timestamp = timestamp;
 		this.likeCount = likeCount;
 	}
