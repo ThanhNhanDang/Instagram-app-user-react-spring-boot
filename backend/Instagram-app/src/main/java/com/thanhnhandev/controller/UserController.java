@@ -13,23 +13,22 @@ import com.thanhnhandev.service.UserService;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-	
+
 	private UserService userService;
-	
+
 	public UserController(UserService userService) {
 		super();
 		this.userService = userService;
 	}
 
 	@PostMapping
-	private boolean submitUser(@RequestBody Users user) {
-		userService.submitMetaDataOfUser(user);
-		return true;
+	private Users submitUser(@RequestBody Users user) {
+		return userService.submitMetaDataOfUser(user);
 	}
-	
+
 	@GetMapping("/{userId}")
 	private Users getUserDetails(@PathVariable("userId") String userId) {
-		Users user = userService.displayUserMetaData(userId);
-		return user;
+
+		return userService.displayUserMetaData(userId);
 	}
 }
