@@ -11,7 +11,7 @@ import javax.persistence.Id;
 public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 	private String postId;
 	private String userId;
 	private String userName;
@@ -23,7 +23,7 @@ public class Post {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Post(Long id, String postId, String userId, String userName, String path, Timestamp timestamp, int likeCount) {
+	public Post(Integer id, String postId, String userId, String userName, String path, Timestamp timestamp, int likeCount) {
 		super();
 		this.id = id;
 		this.postId = postId;
@@ -34,11 +34,11 @@ public class Post {
 		this.likeCount = likeCount;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

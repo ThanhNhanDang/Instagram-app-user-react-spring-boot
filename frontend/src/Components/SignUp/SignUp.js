@@ -36,7 +36,8 @@ export class SignUp extends Component {
         fetch("http://localhost:8081/api/users", requestOptions)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
+            localStorage.setItem("users", JSON.stringify(user));
+            window.location.reload();
           })
           .catch((error) => {});
       })

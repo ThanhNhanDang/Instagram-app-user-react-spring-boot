@@ -1,5 +1,6 @@
 package com.thanhnhandev.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class PostService {
 		for(Post post : list) {
 			post.setUserName(userService.displayUserMetaData(post.getUserId()).getUserName());
 		}
+		Collections.sort(list,(a,b)->b.getId()-a.getId());
 		return  list;
 	}
 	

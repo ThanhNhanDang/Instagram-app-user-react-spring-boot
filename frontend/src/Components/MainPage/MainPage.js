@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import Post from "../Post/Post";
 import "./MainPage.css";
-import statusImg1 from "../../images/pp1.png";
+import statusImg1 from "../../images/avatar.jpg";
 import uploadIcon from "../../images/upload.png";
+import { storage, auth } from "../firebase";
 
 export class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       postList: [],
+      progressBar: "",
     };
   }
 
@@ -16,46 +18,95 @@ export class MainPage extends Component {
     this.getPosts();
   }
   getPosts = () => {
-    let data = [
-      {
-        id: "1234",
-        profileImage: statusImg1,
-        username: "username 1",
-        postImage:
-          "https://media.istockphoto.com/photos/beautiful-sunrise-over-the-sea-picture-id610041376?k=20&m=610041376&s=612x612&w=0&h=JoEPWYoq1-FN5ANIQHNNdI2XrRDYnPCUWuLOHMrgLnE=",
-        likes: "1242",
+    const thisContext = this;
+    fetch("http://localhost:8081/api/post")
+    .then((response) => response.json())
+    .then((data) => {
+        thisContext.setState({ postList: data });
+    })
+    .catch((error) => {});
+   
+  };
+
+
+  
+
+  upload = (event) => {
+    let image = event.target.files[0];
+    const thisContext = this;
+    if (image == null || image == undefined) return;
+    var uploadTask = storage
+      .ref("images")
+      .child(image.name)
+      .put(image);
+    uploadTask.on(
+      "state_changed",
+      function(snapshot) {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        thisContext.setState({ progressBar: progress });
       },
-      {
-        id: "1234",
-        profileImage: statusImg1,
-        username: "username 1",
-        postImage:
-          "https://media.istockphoto.com/photos/beautiful-sunrise-over-the-sea-picture-id610041376?k=20&m=610041376&s=612x612&w=0&h=JoEPWYoq1-FN5ANIQHNNdI2XrRDYnPCUWuLOHMrgLnE=",
-        likes: "1242",
+      function(error) {
+        console.log(error);
       },
-    ];
-    this.setState({ postList: data });
+      function() {
+        
+        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          const payload = {
+            postId: Math.floor(Math.random() * 100000).toString(),
+            path: downloadURL,
+            userId: JSON.parse(localStorage.getItem("users")).uid,
+            timestamp: new Date().getTime(),
+            likeCount: 0,
+          };
+
+          const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          };
+
+          fetch("http://localhost:8081/api/post", requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+              thisContext.getPosts();
+            })
+            .catch((error) => {});
+        });
+      }
+    );
   };
 
   render() {
     return (
       <div>
-        <div style={{textAlign:"center", margin:"10px"}}>
-          <img className="mainpage__uploadicon" alt="upload" src={uploadIcon}/>
+        <div className="mainpage__container">
+          <div className="mainpage__divider"></div>
+          <div className="fileupload">
+            <label for="file-upload">
+              <img
+                className="mainpage__uploadicon"
+                alt="upload"
+                src={uploadIcon}
+              />
+            </label>
+            <input onChange={this.upload} id="file-upload" type="file"></input>
+          </div>
+          <div className="mainpage__divider"></div>
         </div>
+
+        <div className="upload_text">{this.state.progressBar}</div>
         <div>
-        {this.state.postList.map((post, index) => (
-          <Post
-            key={index}
-            id={post.id}
-            profileImage={post.profileImage}
-            username={post.username}
-            postImage={post.postImage}
-            likes={post.likes}
-          />
-        ))}
+          {this.state.postList.map((post, index) => (
+            <Post
+              key={index}
+              id={post.id}
+              profileImage={statusImg1}
+              username={post.userName}
+              postImage={post.path}
+              likes={post.likeCount}
+            />
+          ))}
         </div>
-        
       </div>
     );
   }

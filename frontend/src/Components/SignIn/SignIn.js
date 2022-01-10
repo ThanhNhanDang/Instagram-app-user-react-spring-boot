@@ -16,7 +16,8 @@ export class SignIn extends Component {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        // ...
+        localStorage.setItem("users",JSON.stringify(user));
+        window.location.reload()
       })
       .catch((error) => {
         //const errorCode = error.code;

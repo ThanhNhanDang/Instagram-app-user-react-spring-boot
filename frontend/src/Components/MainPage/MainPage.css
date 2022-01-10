@@ -1,6 +1,7 @@
 .mainpage__uploadicon {
   height: 80px;
   width: 80px;
+  cursor: pointer;
 }
 .mainpage__divider {
   height: 0px;
