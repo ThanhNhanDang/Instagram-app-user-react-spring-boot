@@ -99,7 +99,7 @@ export class MainPage extends Component {
           {this.state.postList.map((post, index) => (
             <Post
               key={index}
-              id={post.id}
+              id={post.postId}
               profileImage={statusImg1}
               username={post.userName}
               postImage={post.path}

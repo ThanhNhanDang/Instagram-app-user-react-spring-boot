@@ -9,31 +9,51 @@ export class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        commentList:[]
+      commentList: [],
     };
   }
 
-  componentDidMount(){
-      this.getComments()
+  componentDidMount() {
+    this.getComments();
   }
 
-  getComments=()=>{
-      let data=[
-          {
-              username:"ADX",
-              commentId:"1234",
-              timeStamp:"1234",
-              description:"Comment 1"
-          },
-          {
-            username:"ADX",
-            commentId:"1234",
-            timeStamp:"1234",
-            description:"Comment 1"
-        }
-      ]
-      this.setState({commentList:data})
-  }
+  getComments = () => {
+    fetch("http://localhost:8081/api/comment/" + this.props.id)
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ commentList: data });
+      })
+      .catch((error) => {});
+  };
+
+  submitComments = (event) => {
+    if (event.key == "Enter") {
+      let comment = event.currentTarget.value;
+      if (comment != null || comment != undefined) {
+        const payload = {
+          commentId: Math.floor(Math.random() * 100000).toString(),
+          postId: this.props.id,
+          userId: JSON.parse(localStorage.getItem("users")).uid,
+          timestamp: new Date().getTime(),
+          comment: comment,
+        };
+
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        };
+
+        fetch("http://localhost:8081/api/comment", requestOptions)
+          .then((response) => response.json())
+          .then((data) => {
+            this.getComments();
+          })
+          .catch((error) => {});
+      }
+    }
+  };
+
   render() {
     return (
       <div className="post__container">
@@ -44,7 +64,7 @@ export class Post extends Component {
         </div>
         {/* Image */}
         <div>
-          <img alt="postImage"src={this.props.postImage} width="615px" />
+          <img alt="postImage" src={this.props.postImage} width="615px" />
         </div>
         {/* Analytics */}
         <div>
@@ -59,13 +79,20 @@ export class Post extends Component {
         </div>
         {/* Comment Section */}
         <div>
-            {this.state.commentList.map((comment, index)=>(
-                 <div key={index} className="post__comment">{comment.username}: {comment.description}</div>
-            ))}
-          
+          {this.state.commentList.map((comment, index) =>
+            index < 4 ? (
+              <div key={comment.id} className="post__comment">
+                {comment.userName}: {comment.comment}
+              </div>
+            ) : (
+              <span></span>
+            )
+          )}
+
           <input
             className="post__commentbox"
             type="text"
+            onKeyPress={this.submitComments}
             placeholder="Add a comment..."
           />
         </div>
